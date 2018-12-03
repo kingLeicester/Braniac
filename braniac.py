@@ -142,7 +142,7 @@ class BiasCorrector:
 		return mask_outfile
 
 	def create_tempory_directory(self):
-		temporary_directory = f'{self.output_dir}{self.subject_dir}/anat/tmp/'
+		temporary_directory = self.identify_temporary_directory()
 		os.makedirs(temporary_directory, exist_ok=True)
 
 	def identify_temporary_directory(self):
@@ -154,9 +154,13 @@ class BiasCorrector:
 		first_iteration_outfile = f'{temporary_directory}{self.subject_dir}_T1w_N4Corrected_iter1.nii.gz'
 		return first_iteration_outfile
 
-	def identify_final_iteration_output_file(self):
+	def identify_first_final_iteration_output_file(self):
 		iteration_outfile = f'{self.output_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w_N4Corrected.nii.gz'
 		return iteration_outfile
+
+	def identify_second_final_iteration_output_file(self):
+		iteration_second_outfile = f'{self.input_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w_N4Corrected.nii.gz'
+		return iteration_second_outfile
 
 	def bias_correct(self):
 		infile = self.identify_input_file()
@@ -174,8 +178,11 @@ class BiasCorrector:
 	def extract_final_iteration(self):
 		temporary_directory = self.identify_temporary_directory()
 		infile = f'{temporary_directory}{self.subject_dir}_T1w_N4Corrected_iter6.nii.gz'
-		outfile = self.identify_final_iteration_output_file()
-		shutil.copyfile(infile, outfile)
+		first_outfile = self.identify_first_final_iteration_output_file()
+		second_outfile = self.identify_second_final_iteration_output_file()
+		shutil.copyfile(infile, first_outfile)
+		shutil.copyfile(infile, second_outfile)
+
 
 	def remove_temporary_directory(self):
 		temporary_directory = self.identify_temporary_directory()
@@ -527,7 +534,7 @@ class ScanEprimeConverter:
 class NiftiRotator:
 
 	def __init__(self, study_name, subject_number):
-		self.nifti_dir = f"/study/{study_name}/{study_name.upper()}_Imaging/"
+		self.nifti_dir = f"/study/{study_name}/processed_data/{study_name.upper()}_Imaging/"
 		self.study_name = study_name
 		self.subject_number = subject_number
 		self.subject_dir = "sub-" + subject_number
@@ -541,7 +548,9 @@ class NiftiRotator:
 
 	def fix_task_fMRI_orientation(self, run_number, old_scan_name, new_scan_name):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_{old_scan_name}_{run_number}_bold.nii.gz'
+		#print (target_nifti)
 		if os.path.isfile(target_nifti):
+			print (f"fixing orientations for {self.subject_number} task-fMRI {run_number}")
 			os.system(f'fslreorient2std {target_nifti} {self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_{new_scan_name}_{run_number}_bold.nii.gz')
 			os.remove(target_nifti)
 
@@ -553,11 +562,13 @@ class NiftiRotator:
 	def fix_resting_fMRI_orientation(self):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_task-rest_bold.nii.gz'
 		if os.path.isfile(target_nifti):
+			print (f"fixing orientations for {self.subject_number} resting-fMRI")
 			os.system(f'fslreorient2std {target_nifti} {target_nifti}')
 
 	def fix_dwi_orientation(self):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/dwi/{self.subject_dir}_dwi.nii.gz'
 		if os.path.isfile(target_nifti):
+			print (f"fixing orientations for {self.subject_number} DWI")
 			os.system(f'fslreorient2std {target_nifti} {target_nifti}')
 
 	def process(self):
@@ -640,19 +651,19 @@ class NiftiConverter:
 
 			if scan_name == "task-ER_run-1_bold":
 				scan_type = "func"
-				new_scan_name = "task-EmotionRegulation_run-01_bold"
+				new_scan_name = "task-ER_run-01_bold"
 				os.makedirs(self.nifti_dir + self.subject_dir + "/func/", exist_ok=True)
 				self.convert(scan, scan_type, self.subject_dir, new_scan_name)
 
 			if scan_name == "task-ER_run-2_bold":
 				scan_type = "func"
-				new_scan_name = "task-EmotionRegulation_run-02_bold"
+				new_scan_name = "task-ER_run-02_bold"
 				os.makedirs(self.nifti_dir + self.subject_dir + "/func/", exist_ok=True)
 				self.convert(scan, scan_type, self.subject_dir, new_scan_name)
 
 			if scan_name == "task-ER_run-3_bold":
 				scan_type = "func"
-				new_scan_name = "task-EmotionRegulation_run-03_bold"
+				new_scan_name = "task-ER_run-03_bold"
 				os.makedirs(self.nifti_dir + self.subject_dir + "/func/", exist_ok=True)
 				self.convert(scan, scan_type, self.subject_dir, new_scan_name)
 
