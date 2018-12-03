@@ -10,10 +10,10 @@ i.e.) python run_braniac.py <study_name> <subject_number>
 
 Necessary Dependencies:
 
-Python Version 3.7.1 
+Python 3.7.1 
 
-FSL Version 5.0.11 
+FSL 5.0.11 
 
-BrainSuite Version 18a 
+BrainSuite 18a 
 
 MATLAB R2015b 
