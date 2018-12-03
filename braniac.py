@@ -260,7 +260,6 @@ class BetBrainExtractor:
 	# 	outdir = f'{self.output_dir}{study_name_all_caps}_Imaging_Analysis/{self.subject_dir}/anat'
 	# 	os.makedirs(outdir, exist_ok = True)
 
-
 	def identify_input_file(self):
 		infile = f'{self.input_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w.nii.gz'
 		return infile
@@ -276,11 +275,17 @@ class BetBrainExtractor:
 	def skull_strip_bet(self, infile, outfile):
 		os.system(f'bet {infile} {outfile} -m -f 0.3 -R')
 
+	def copy_original_T1w(self):
+		infile = self.identify_input_file()
+		outfile = f'{self.output_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w.nii.gz'
+		copyfile(infile, outfile)
+
 	def process(self):
 		infile = self.identify_input_file()
 		self.create_bet_output_directory()
 		outfile = self.identify_bet_output_file()
 		self.skull_strip_bet(infile, outfile)
+		self.copy_original_T1w()
 
 
 
