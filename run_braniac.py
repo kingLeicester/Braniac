@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-from panthera_onca import NiftiConverter
-from panthera_onca import NiftiRotator
-from panthera_onca import ScanEprimeConverter
-from panthera_onca import ScanEprimeDivider
-from panthera_onca import OnsetCreator
-from panthera_onca import BetBrainExtractor
-from panthera_onca import BSEBrainExtractor
-from panthera_onca import BiasCorrector
-from panthera_onca import VolumeTrimmer
-from panthera_onca import MotionEvaluator
+from braniac import NiftiConverter
+from braniac import NiftiRotator
+from braniac import ScanEprimeConverter
+from braniac import ScanEprimeDivider
+from braniac import OnsetCreator
+from braniac import BetBrainExtractor
+from braniac import BSEBrainExtractor
+from braniac import BiasCorrector
+from braniac import VolumeTrimmer
+from braniac import MotionEvaluator
 
 import sys
 from datetime import datetime
