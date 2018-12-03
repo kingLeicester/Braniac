@@ -278,7 +278,7 @@ class BetBrainExtractor:
 	def copy_original_T1w(self):
 		infile = self.identify_input_file()
 		outfile = f'{self.output_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w.nii.gz'
-		copyfile(infile, outfile)
+		shutil.copyfile(infile, outfile)
 
 	def process(self):
 		infile = self.identify_input_file()
