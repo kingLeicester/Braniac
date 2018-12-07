@@ -49,6 +49,7 @@ class MotionEvaluator:
 			confound_outfile = f'{qa_dir}/0{i}_confound.txt'
 			plot_outfile = f'{qa_dir}/fd_plot_0{i}.png'
 			outlier_outfile = f'{qa_dir}/outlier_output_0{i}.txt'
+			print (f"assesing motion for task-fMRI run {i}")
 			os.system(f'fsl_motion_outliers -i {infile} -o {confound_outfile} --fd --thresh=0.5 -p {plot_outfile} -v > {outlier_outfile}')
 			if not os.path.isfile(confound_outfile):
 				os.mknod(confound_outfile)
@@ -63,6 +64,7 @@ class MotionEvaluator:
 		confound_outfile = f'{qa_dir}/04_confound.txt'
 		plot_outfile = f'{qa_dir}/fd_plot_04.png'
 		outlier_outfile = f'{qa_dir}/outlier_output_04.txt'
+		print (f"assesing motion for resting-fMRI")
 		os.system(f'fsl_motion_outliers -i {infile} -o {confound_outfile} --fd --thresh=0.2 -p {plot_outfile} -v > {outlier_outfile}')
 		if not os.path.isfile(confound_outfile):
 				os.mknod(confound_outfile)
@@ -102,6 +104,7 @@ class VolumeTrimmer:
 		for i in range(1,4):
 			infile = self.identify_task_fmri_input_file("EmotionRegulation", i)
 			outfile = self.identify_task_fmri_trimmed_file("EmotionRegulation", i)
+			print (f"trimming first {str(number_volume)} volmues of run {i}")
 			os.system(f'fslroi {infile} {outfile} {number_volume} -1')
 		
 	def identify_resting_fmri_input_file(self):
@@ -118,6 +121,7 @@ class VolumeTrimmer:
 		infile = self.identify_resting_fmri_input_file()
 		outfile = self.identify_resting_fmri_trimmed_file()
 		os.system(f'fslroi {infile} {outfile} {number_volume} -1')
+		print (f"trimming first {str(number_volume)} volmues of resting-fMRI")
 
 	def process(self):
 		self.create_output_directory()
@@ -578,14 +582,14 @@ class NiftiRotator:
 
 	def process(self):
 		self.fix_T1w_orientation()
-		# self.fix_task_fMRI_orientation("run-01", "task-ER", "task-EmotionRegulation")
-		# self.rename_task_fMRI_json("run-01", "task-ER", "task-EmotionRegulation")
-		# self.fix_task_fMRI_orientation("run-02", "task-ER", "task-EmotionRegulation")
-		# self.rename_task_fMRI_json("run-02", "task-ER", "task-EmotionRegulation")
-		# self.fix_task_fMRI_orientation("run-03", "task-ER", "task-EmotionRegulation")
-		# self.rename_task_fMRI_json("run-03", "task-ER", "task-EmotionRegulation")
-		# self.fix_resting_fMRI_orientation()
-		# self.fix_dwi_orientation()
+		self.fix_task_fMRI_orientation("run-01", "task-ER", "task-EmotionRegulation")
+		self.rename_task_fMRI_json("run-01", "task-ER", "task-EmotionRegulation")
+		self.fix_task_fMRI_orientation("run-02", "task-ER", "task-EmotionRegulation")
+		self.rename_task_fMRI_json("run-02", "task-ER", "task-EmotionRegulation")
+		self.fix_task_fMRI_orientation("run-03", "task-ER", "task-EmotionRegulation")
+		self.rename_task_fMRI_json("run-03", "task-ER", "task-EmotionRegulation")
+		self.fix_resting_fMRI_orientation()
+		self.fix_dwi_orientation()
 
 
 
