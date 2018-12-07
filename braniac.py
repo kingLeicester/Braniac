@@ -545,6 +545,11 @@ class NiftiRotator:
 	# 	for nifti in niftis:
 	# 		subject_dir = nifti.split('/')[5]
 	# 		subject_number = subject_dir[4:]
+	def fix_T1w_orientation(self):
+		target_nifti = f'{self.nifti_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w.nii.gz'
+		if os.path.isfile(target_nifti):
+			print (f"fixing orientations for {self.subject_number} T1w")
+			os.system(f'fslreorient2std {target_nifti} {self.nifti_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w_reoriented.nii.gz')
 
 	def fix_task_fMRI_orientation(self, run_number, old_scan_name, new_scan_name):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_{old_scan_name}_{run_number}_bold.nii.gz'
@@ -572,14 +577,15 @@ class NiftiRotator:
 			os.system(f'fslreorient2std {target_nifti} {target_nifti}')
 
 	def process(self):
-		self.fix_task_fMRI_orientation("run-01", "task-ER", "task-EmotionRegulation")
-		self.rename_task_fMRI_json("run-01", "task-ER", "task-EmotionRegulation")
-		self.fix_task_fMRI_orientation("run-02", "task-ER", "task-EmotionRegulation")
-		self.rename_task_fMRI_json("run-02", "task-ER", "task-EmotionRegulation")
-		self.fix_task_fMRI_orientation("run-03", "task-ER", "task-EmotionRegulation")
-		self.rename_task_fMRI_json("run-03", "task-ER", "task-EmotionRegulation")
-		self.fix_resting_fMRI_orientation()
-		self.fix_dwi_orientation()
+		self.fix_T1w_orientation()
+		# self.fix_task_fMRI_orientation("run-01", "task-ER", "task-EmotionRegulation")
+		# self.rename_task_fMRI_json("run-01", "task-ER", "task-EmotionRegulation")
+		# self.fix_task_fMRI_orientation("run-02", "task-ER", "task-EmotionRegulation")
+		# self.rename_task_fMRI_json("run-02", "task-ER", "task-EmotionRegulation")
+		# self.fix_task_fMRI_orientation("run-03", "task-ER", "task-EmotionRegulation")
+		# self.rename_task_fMRI_json("run-03", "task-ER", "task-EmotionRegulation")
+		# self.fix_resting_fMRI_orientation()
+		# self.fix_dwi_orientation()
 
 
 
