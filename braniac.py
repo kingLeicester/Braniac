@@ -49,7 +49,7 @@ class MotionEvaluator:
 			confound_outfile = f'{qa_dir}/0{i}_confound.txt'
 			plot_outfile = f'{qa_dir}/fd_plot_0{i}.png'
 			outlier_outfile = f'{qa_dir}/outlier_output_0{i}.txt'
-			print (f"assesing motion for task-fMRI run {i}")
+			print (f"=====assesing motion for task-fMRI run {i}=====")
 			os.system(f'fsl_motion_outliers -i {infile} -o {confound_outfile} --fd --thresh=0.5 -p {plot_outfile} -v > {outlier_outfile}')
 			if not os.path.isfile(confound_outfile):
 				os.mknod(confound_outfile)
@@ -64,7 +64,7 @@ class MotionEvaluator:
 		confound_outfile = f'{qa_dir}/04_confound.txt'
 		plot_outfile = f'{qa_dir}/fd_plot_04.png'
 		outlier_outfile = f'{qa_dir}/outlier_output_04.txt'
-		print (f"assesing motion for resting-fMRI")
+		print (f"=====assesing motion for resting-fMRI=====")
 		os.system(f'fsl_motion_outliers -i {infile} -o {confound_outfile} --fd --thresh=0.2 -p {plot_outfile} -v > {outlier_outfile}')
 		if not os.path.isfile(confound_outfile):
 				os.mknod(confound_outfile)
@@ -104,7 +104,7 @@ class VolumeTrimmer:
 		for i in range(1,4):
 			infile = self.identify_task_fmri_input_file("EmotionRegulation", i)
 			outfile = self.identify_task_fmri_trimmed_file("EmotionRegulation", i)
-			print (f"trimming first {str(number_volume)} volmues of run {i}")
+			print (f"=====trimming first {str(number_volume)} volmues of run {i}=====")
 			os.system(f'fslroi {infile} {outfile} {number_volume} -1')
 		
 	def identify_resting_fmri_input_file(self):
@@ -121,7 +121,7 @@ class VolumeTrimmer:
 		infile = self.identify_resting_fmri_input_file()
 		outfile = self.identify_resting_fmri_trimmed_file()
 		os.system(f'fslroi {infile} {outfile} {number_volume} -1')
-		print (f"trimming first {str(number_volume)} volmues of resting-fMRI")
+		print (f"=====trimming first {str(number_volume)} volmues of resting-fMRI=====")
 
 	def process(self):
 		self.create_output_directory()
@@ -552,14 +552,14 @@ class NiftiRotator:
 	def fix_T1w_orientation(self):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w.nii.gz'
 		if os.path.isfile(target_nifti):
-			print (f"fixing orientations for {self.subject_number} T1w")
+			print (f"=====fixing orientations for {self.subject_number} T1w=====")
 			os.system(f'fslreorient2std {target_nifti} {self.nifti_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w_reoriented.nii.gz')
 
 	def fix_task_fMRI_orientation(self, run_number, old_scan_name, new_scan_name):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_{old_scan_name}_{run_number}_bold.nii.gz'
 		#print (target_nifti)
 		if os.path.isfile(target_nifti):
-			print (f"fixing orientations for {self.subject_number} task-fMRI {run_number}")
+			print (f"=====fixing orientations for {self.subject_number} task-fMRI {run_number}=====")
 			os.system(f'fslreorient2std {target_nifti} {self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_{new_scan_name}_{run_number}_bold.nii.gz')
 			os.remove(target_nifti)
 
@@ -571,13 +571,13 @@ class NiftiRotator:
 	def fix_resting_fMRI_orientation(self):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/func/{self.subject_dir}_task-rest_bold.nii.gz'
 		if os.path.isfile(target_nifti):
-			print (f"fixing orientations for {self.subject_number} resting-fMRI")
+			print (f"=====fixing orientations for {self.subject_number} resting-fMRI=====")
 			os.system(f'fslreorient2std {target_nifti} {target_nifti}')
 
 	def fix_dwi_orientation(self):
 		target_nifti = f'{self.nifti_dir}{self.subject_dir}/dwi/{self.subject_dir}_dwi.nii.gz'
 		if os.path.isfile(target_nifti):
-			print (f"fixing orientations for {self.subject_number} DWI")
+			print (f"=====fixing orientations for {self.subject_number} DWI=====")
 			os.system(f'fslreorient2std {target_nifti} {target_nifti}')
 
 	def process(self):
@@ -702,3 +702,47 @@ class NiftiConverter:
 				os.makedirs(self.nifti_dir + self.subject_dir + "/asl/", exist_ok=True)
 				self.convert(scan, scan_type, self.subject_dir, scan_name)
 
+class ProcessChecker:
+
+	def __init__(self, study_name, subject_number):
+		
+		self.nifti_dir = f"/study/{study_name}/processed_data/{study_name.upper()}_Imaging/"
+		self.raw_dir = f"/study/{study_name}/raw-data/"
+		self.study_name = study_name
+		self.subject_number = subject_number
+		self.subject_dir = "sub-" + subject_number
+		self.subject_dicom_path = self.raw_dir + subject_number
+		self.subject_nifti_path = self.nifti_dir + self.subject_dir
+
+	def check_raw_data(self):
+		if os.path.isdir(self.subject_dicom_path):
+			return True
+
+		else:
+			return False
+
+	def check_processed_data(self):
+		if os.path.isdir(self.subject_nifti_path):
+			return True
+		else:
+			return False
+
+	def process(self):
+
+		check_raw_boolean = self.check_raw_data()
+		check_processed_data_boolean = self.check_processed_data()
+
+		if check_raw_boolean == True and check_processed_data_boolean == False:
+			print (f"=====Niftis for {self.subject_number} do not exist, INITIATE processing=====")
+
+		elif check_raw_boolean == True and check_processed_data_boolean == True:
+			print (f"=====Raw Dicoms and Processed Niftis for {self.subject_number} already exist, ABORT processing=====")
+			exit()
+
+		elif check_raw_boolean == False and check_processed_data_boolean == True:
+			print (f"=====Raw Dicoms for {self.subject_number} do not exist, but porcessed Niftis do, RED FLAG, check data=====")
+			exit()
+
+		elif check_raw_boolean == False and check_processed_data_boolean == False:
+			print (f"=====Raw Dicoms and Processed Niftis for {self.subject_number} do not exist, check study name and subject number=====")
+			exit()
