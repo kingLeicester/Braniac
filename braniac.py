@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-"""testr.py: Updating the original nueroimaging processing pipeline"""
-
 __author__ = "David Lee"
 __credits__ = ["David Lee", "Micheal Kelly", "Jeanette Mumford", "Nate Vack"]
 __version__ = "1.0"
