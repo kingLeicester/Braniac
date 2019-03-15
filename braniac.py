@@ -139,8 +139,8 @@ class BiasCorrector:
 		infile = f'{self.input_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w.nii.gz'
 		return infile
 
-	def identify_mask_output_file(self):
-		mask_outfile = f'{self.output_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w_N4Corrected_brain_mask.nii.gz'
+	def identify_mask_output_file(self, mask_input):
+		mask_outfile = f'{self.output_dir}{self.subject_dir}/anat/{self.subject_dir}_{mask_input}'#T1w_brain_mask.nii.gz
 		return mask_outfile
 
 	def create_tempory_directory(self):
@@ -164,9 +164,9 @@ class BiasCorrector:
 		iteration_second_outfile = f'{self.input_dir}{self.subject_dir}/anat/{self.subject_dir}_T1w_N4Corrected.nii.gz'
 		return iteration_second_outfile
 
-	def bias_correct(self):
+	def bias_correct(self, mask_input):
 		infile = self.identify_input_file()
-		mask_outfile = self.identify_mask_output_file()
+		mask_outfile = self.identify_mask_output_file(mask_input)
 		first_iteration_outfile = self.identify_first_iteration_output_file()
 		temporary_directory = self.identify_temporary_directory()
 		os.system(f'N4BiasFieldCorrection -i {infile} -x {mask_outfile} -o {first_iteration_outfile}')
@@ -191,9 +191,9 @@ class BiasCorrector:
 		shutil.rmtree(temporary_directory)
 
 
-	def process(self):
+	def process(self, mask_input = 'T1w_N4Corrected_brain_mask.nii.gz'):
 		self.create_tempory_directory()
-		self.bias_correct()
+		self.bias_correct(mask_input)
 		self.extract_final_iteration()
 		self.remove_temporary_directory()
 
