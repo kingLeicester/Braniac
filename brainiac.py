@@ -1,21 +1,68 @@
 #!/usr/bin/env python
 
 __author__ = "David Lee"
-__credits__ = ["David Lee", "Micheal Kelly", "Jeanette Mumford", "Nate Vack"]
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __maintainer__ = "David Lee"
 __email__ = "david.s.lee@wisc.edu"
-__status__ = "In Use"
+__credits__ = ["David Lee", "Micheal Kelly", "Jeanette Mumford", "Nate Vack"]
 
 import os
 import glob
 import csv
 import pandas as pd
 import shutil
+import os.path
+import json
 
 # TO DO
 # 1. add print statements in general
 # 2. qa all the outputs. probably just compare and contrast with the old one
+
+class JsonCreator:
+	def __init__(self, study_name, subject_number):
+		self.input_dir = f"/study/{study_name}/processed_data/{study_name.upper()}_Imaging/"
+		self.output_dir = f"/study/{study_name}/processed_data/{study_name.upper()}_Imaging/"
+		self.study_name = study_name
+		self.subject_number = subject_number
+		self.subject_dir = "sub-" + subject_number
+
+
+	def identify_json(self):
+		json = f'{self.input_dir}dataset_description.json'
+		return json
+
+	def check_json(self, json_dict):
+		json = self.identify_json()
+		# if os.path.exists(json):
+		# 	print ("dataset json file exists, check content")
+		# 	return True
+
+		# else:
+		# 	print ("dataset json file does not exist, creating one")
+		# 	os.touch(json)
+		# 	return False
+		try:
+			os.system(f"more {json}")
+			print ("dataset json file exists, check content above")
+		except IOError:
+			with open (json, 'w') as file:
+				file.write(json.dumps(json_dict))
+			print ("dataset json file does not exist, creating one")
+
+
+	def create_json(self):
+		json_dict = {}
+		key_list = ["Name", "BIDSVersion", "License", "Authors", "Acknowledgements", "HowToAcknowledge", "Funding", "ReferencesAndLinks", "DatasetDOI"]
+		for key in key_list:
+			value = input(f"Enter Value for {key}: ")
+			json_dict[key] = value
+
+		print (json_dict)
+		return (json_dict)
+
+	def process(self):
+		self.check_json(self)
+
 
 class MotionEvaluator:
 	def __init__(self, study_name, subject_number):

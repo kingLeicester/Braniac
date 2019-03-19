@@ -11,6 +11,7 @@ from braniac import BSEBrainExtractor
 from braniac import BiasCorrector
 from braniac import VolumeTrimmer
 from braniac import MotionEvaluator
+from braniac import JsonCreator
 
 import sys
 from datetime import datetime
