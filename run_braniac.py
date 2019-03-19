@@ -55,5 +55,8 @@ volume_trimmer.process()
 motion_evaluator = MotionEvaluator(study_name, subject_number)
 motion_evaluator.process()
 
+json_creator = JsonCreator(study_name, subject_number)
+json_creator.process()
+
 print (datetime.now() - startTime)
 
