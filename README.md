@@ -1,4 +1,4 @@
-# braniac
+# brainiac
 
 The repository contains a Python module (braniac.py) for Pre-Processing and Quality-Assessing MRI (T1-weighted, task-based and resting-state fMRI, and DWI) data. 
 
@@ -14,9 +14,9 @@ MATLAB R2015b
 
 Usage:
 
-Supply studyname and subject number to "run_braniac.py"
+Supply studyname and subject number to "run_brainiac.py"
 
 - source dependancies.sh
 
-- python run_braniac.py <study_name> <subject_number>
+- python run_brainiac.py <study_name> <subject_number>
 
