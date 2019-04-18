@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
-from braniac import ProcessChecker
-from braniac import NiftiConverter
-from braniac import NiftiRotator
-from braniac import ScanEprimeConverter
-from braniac import ScanEprimeDivider
-from braniac import OnsetCreator
-from braniac import BetBrainExtractor
-from braniac import BSEBrainExtractor
-from braniac import BiasCorrector
-from braniac import VolumeTrimmer
-from braniac import MotionEvaluator
-from braniac import JsonCreator
+from brainiac import ProcessChecker
+from brainiac import NiftiConverter
+from brainiac import NiftiRotator
+from brainiac import ScanEprimeConverter
+from brainiac import ScanEprimeDivider
+from brainiac import OnsetCreator
+from brainiac import BetBrainExtractor
+from brainiac import BSEBrainExtractor
+from brainiac import BiasCorrector
+from brainiac import VolumeTrimmer
+from brainiac import MotionEvaluator
+from brainiac import JsonCreator
+
 
 import sys
 from datetime import datetime
