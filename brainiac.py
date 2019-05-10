@@ -43,11 +43,11 @@ class JsonCreator:
 		# 	return False
 		try:
 			os.system(f"more {json}")
-			print ("dataset json file exists, check content above")
+			print ("=====Dataset json file exists, check content above=====")
 		except IOError:
 			with open (json, 'w') as file:
 				file.write(json.dumps(json_dict))
-			print ("dataset json file does not exist, creating one")
+			print ("=====Dataset json file does not exist, creating one=====")
 
 
 	def create_json(self):
@@ -57,6 +57,7 @@ class JsonCreator:
 			value = input(f"Enter Value for {key}: ")
 			json_dict[key] = value
 
+		print ("")
 		print (json_dict)
 		return (json_dict)
 
