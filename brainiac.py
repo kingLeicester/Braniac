@@ -700,8 +700,20 @@ class NiftiConverter:
 			scan_name = self.extract_scan_info(scan)
 
 			if scan_name == "ORIG_T1w": # should be 'ORIG_T1w' for scans with pure-filtered T1w's
+				scan_type = "anat" # this is the directory name 
+				new_scan_name = "T1w" # this is the file name
+				os.makedirs(self.nifti_dir + self.subject_dir + "/anat/", exist_ok=True)
+				self.convert(scan, scan_type, self.subject_dir, new_scan_name)
+
+			if scan_name == "ORIG_CUBE_T2_FLAIR":
 				scan_type = "anat"
-				new_scan_name = "T1w"
+				new_scan_name = "T2_flair"
+				os.makedirs(self.nifti_dir + self.subject_dir + "/anat/", exist_ok=True)
+				self.convert(scan, scan_type, self.subject_dir, new_scan_name)
+
+			if scan_name == "ORIG_CUBE_T2":
+				scan_type = "anat"
+				new_scan_name = "T2_cube"
 				os.makedirs(self.nifti_dir + self.subject_dir + "/anat/", exist_ok=True)
 				self.convert(scan, scan_type, self.subject_dir, new_scan_name)
 
