@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from brainiac import ProcessChecker
-from brainiac import NiftiConverter
+from brainiac import DicomConverter
 from brainiac import NiftiRotator
 from brainiac import ScanEprimeConverter
 from brainiac import ScanEprimeDivider
@@ -27,7 +27,7 @@ subject_number = str(subject_number)
 process_checker = ProcessChecker(study_name, subject_number)
 process_checker.process()
 
-nifti_converter = NiftiConverter(study_name, subject_number)
+nifti_converter = DicomConverter(study_name, subject_number)
 nifti_converter.process()
 
 rotator = NiftiRotator(study_name, subject_number)
