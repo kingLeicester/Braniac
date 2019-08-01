@@ -1,6 +1,6 @@
 # brainiac
 
-The repository contains a Python module (braniac.py) for Pre-Processing and Quality-Assessing MRI (T1-weighted, task-based and resting-state fMRI, and DWI) data. 
+The repository contains a Python module (brainiac.py) for Pre-Processing and Quality-Assessing MRI (T1-weighted, task-based and resting-state fMRI, and DWI) data. 
 
 Necessary Dependencies:
 
