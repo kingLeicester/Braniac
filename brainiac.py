@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 __author__ = "Seung Beum (David) Lee"
-__email__ = "sleedave90@gmail.edu"
+__email__ = "sleedave90@gmail.com"
 __credits__ = ["Seung Beum (David) Lee", "Micheal Kelly", "Jeanette Mumford", "Nate Vack"]
 
 import os
